@@ -14,6 +14,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { Link as RouterLink } from "react-router-dom";
+import { authContext } from "../Contexts/AuthContext";
 
 function Copyright(props) {
   return (
@@ -35,7 +36,28 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function Login() {
+export default function Register() {
+  const { register } = React.useContext(authContext);
+
+  const [email, setEmail] = React.useState("");
+
+  const [password, setPassword] = React.useState("");
+
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+
+  function handleSubmit() {
+    if (!email.trim() || !password.trim() || !confirmPassword.trim()) {
+      alert("Заполните поля!");
+      return;
+    }
+
+    let formData = new FormData();
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("password_confirm", confirmPassword);
+    register(formData);
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -52,7 +74,7 @@ export default function Login() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign up
           </Typography>
           <Box
             component="form"
@@ -69,6 +91,8 @@ export default function Login() {
               name="email"
               autoComplete="email"
               autoFocus
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               margin="normal"
@@ -79,6 +103,8 @@ export default function Login() {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <TextField
               margin="normal"
@@ -89,18 +115,21 @@ export default function Login() {
               type="password"
               id="password-confirm"
               autoComplete="current-password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
             <Button
-              //   type="submit"
+              // type="submit"
+              onClick={handleSubmit}
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Log In
+              Register
             </Button>
             <Grid container>
               <Grid item xs>

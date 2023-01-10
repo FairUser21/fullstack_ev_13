@@ -14,6 +14,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { Link as RouterLink } from "react-router-dom";
+import { authContext } from "../Contexts/AuthContext";
 
 function Copyright(props) {
   return (
@@ -36,6 +37,24 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
+  const { login } = React.useContext(authContext);
+
+  const [email, setEmail] = React.useState("");
+
+  const [password, setPassword] = React.useState("");
+
+  function handleSubmit() {
+    if (!email.trim() || !password.trim()) {
+      alert("Заполните поля!");
+      return;
+    }
+
+    let formData = new FormData();
+    formData.append("email", email);
+    formData.append("password", password);
+    login(formData, email);
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -69,6 +88,8 @@ export default function Login() {
               name="email"
               autoComplete="email"
               autoFocus
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               margin="normal"
@@ -79,6 +100,8 @@ export default function Login() {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -89,6 +112,7 @@ export default function Login() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onClick={handleSubmit}
             >
               Log In
             </Button>

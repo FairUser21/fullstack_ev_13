@@ -13,6 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { Navigate, useNavigate } from "react-router-dom";
+import { authContext } from "./Contexts/AuthContext";
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -34,6 +35,8 @@ function Navbar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const { logout, user } = React.useContext(authContext);
 
   const navigate = useNavigate();
 
@@ -123,19 +126,38 @@ function Navbar() {
                 {page}
               </Button>
             ))} */}
-
-            <Button
-              onClick={() => navigate("/login")}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              Login
-            </Button>
-            <Button
-              onClick={() => navigate("/register")}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              Register
-            </Button>
+            {user ? (
+              <>
+                <Button
+                  onClick={() => navigate("/login")}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  Products
+                </Button>
+                <Typography>{user}</Typography>
+                <Button
+                  onClick={() => logout()}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  onClick={() => navigate("/login")}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  Login
+                </Button>
+                <Button
+                  onClick={() => navigate("/register")}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  Register
+                </Button>
+              </>
+            )}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
