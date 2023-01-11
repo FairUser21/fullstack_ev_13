@@ -129,7 +129,7 @@ function Navbar() {
             {user ? (
               <>
                 <Button
-                  onClick={() => navigate("/login")}
+                  onClick={() => navigate("/products")}
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
                   Products
