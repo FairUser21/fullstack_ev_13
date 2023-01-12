@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_PRODUCTS } from "../../helper";
 
@@ -27,6 +27,7 @@ function reducer(state = INIT_STATE, action) {
 
 const ProductContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, INIT_STATE);
+  const [error, setError] = useState([]);
 
   const navigate = useNavigate();
 
@@ -51,9 +52,32 @@ const ProductContextProvider = ({ children }) => {
     }
   }
 
+  async function addProducts(newProd) {
+    try {
+      const token = JSON.parse(localStorage.getItem("token"));
+      const Authorization = `Bearer ${token.access}`;
+      const config = {
+        headers: {
+          Authorization,
+        },
+      };
+
+      const res = await axios.post(
+        `${API_PRODUCTS}/products/`,
+        newProd,
+        config
+      );
+      console.log(res.data);
+      navigate("/products");
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   let values = {
     products: state.products,
 
+    addProducts,
     getProducts,
   };
   return (
