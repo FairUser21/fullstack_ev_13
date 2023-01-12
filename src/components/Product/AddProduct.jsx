@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Alert,
   Box,
@@ -16,10 +16,48 @@ import { productContext } from "../Contexts/ProductContext";
 
 const AddProduct = () => {
   const { user } = useContext(authContext);
-  const { AddProduct, error } = useContext(productContext);
+  const { addProducts, error, categories, getCategories } =
+    useContext(productContext);
+
+  useEffect(() => {
+    getCategories();
+  }, []);
+
+  const [product, setProduct] = useState({
+    title: "",
+    description: "",
+    price: "",
+    category: "",
+    image: "",
+  });
+
+  const handleInp = (e) => {
+    if (e.target.name === "image") {
+      setProduct({
+        ...product,
+        [e.target.name]: e.target.files[0],
+      });
+    } else {
+      setProduct({
+        ...product,
+        [e.target.name]: e.target.value,
+      });
+    }
+  };
+
+  function handleSave() {
+    let newProduct = new FormData();
+    newProduct.append("title", product.title);
+    newProduct.append("description", product.description);
+    newProduct.append("price", product.price);
+    newProduct.append("category", product.category);
+    newProduct.append("image", product.image);
+    addProducts(newProduct);
+  }
 
   return (
     <div>
+      {" "}
       {user === "admin@admin.com" ? (
         <Box
           sx={{
@@ -41,6 +79,8 @@ const AddProduct = () => {
             variant="outlined"
             fullWidth
             name="title"
+            value={product.title}
+            onChange={handleInp}
           />
           <TextField
             sx={{ m: 1 }}
@@ -49,6 +89,8 @@ const AddProduct = () => {
             variant="outlined"
             fullWidth
             name="description"
+            value={product.description}
+            onChange={handleInp}
           />
           <TextField
             sx={{ m: 1 }}
@@ -57,7 +99,26 @@ const AddProduct = () => {
             variant="outlined"
             fullWidth
             name="price"
+            value={product.price}
+            onChange={handleInp}
           />
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Category</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              label="сфеупщкн"
+              onChange={handleInp}
+              value={product.category}
+              name="category"
+            >
+              {categories?.map((item) => (
+                <MenuItem value={item.id} key={item.id}>
+                  {item.title}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
           <input
             type="file"
@@ -72,6 +133,7 @@ const AddProduct = () => {
             variant="outlined"
             fullWidth
             size="large"
+            onClick={handleSave}
           >
             ADD PRODUCT
           </Button>

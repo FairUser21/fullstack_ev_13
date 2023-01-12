@@ -134,7 +134,13 @@ function Navbar() {
                 >
                   Products
                 </Button>
-                <Typography>{user}</Typography>
+                <Button
+                  onClick={() => navigate("/admin")}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  Admin Page
+                </Button>
+                {user}
                 <Button
                   onClick={() => logout()}
                   sx={{ my: 2, color: "white", display: "block" }}
