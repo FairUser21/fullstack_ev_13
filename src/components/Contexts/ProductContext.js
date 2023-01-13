@@ -98,6 +98,24 @@ const ProductContextProvider = ({ children }) => {
     }
   }
 
+  async function toggleLike(id) {
+    try {
+      const token = JSON.parse(localStorage.getItem("token"));
+      const Authorization = `Bearer ${token.access}`;
+      const config = {
+        headers: {
+          Authorization,
+        },
+      };
+
+      const res = await axios(`${API_PRODUCTS}/${id}/toggle_like/`, config);
+      getProducts();
+    } catch (e) {
+      console.log(e);
+      //~ setError(e.response.data);
+    }
+  }
+
   let values = {
     products: state.products,
     pages: state.pages,
@@ -107,6 +125,7 @@ const ProductContextProvider = ({ children }) => {
     getCategories,
     addProducts,
     getProducts,
+    toggleLike,
   };
   return (
     <productContext.Provider value={values}>{children}</productContext.Provider>
