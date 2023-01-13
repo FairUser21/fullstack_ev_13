@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import { productContext } from "../Contexts/ProductContext";
 
 const ProductCard = ({ item }) => {
-  const { toggleLike } = React.useContext(productContext);
+  const { toggleLike, deleteProduct } = React.useContext(productContext);
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -34,14 +34,16 @@ const ProductCard = ({ item }) => {
           </Typography>
         </div>
       </CardContent>
-      {item.is_author ? (
-        <CardActions>
-          <Button size="small">Delete</Button>
-          <Button size="small" onClick={() => toggleLike(item.id)}>
-            Like
+      <CardActions>
+        <Button size="small" onClick={() => toggleLike(item.id)}>
+          Like
+        </Button>
+        {item.is_author ? (
+          <Button size="small" onClick={() => deleteProduct(item.id)}>
+            Delete
           </Button>
-        </CardActions>
-      ) : null}
+        ) : null}
+      </CardActions>
     </Card>
   );
 };

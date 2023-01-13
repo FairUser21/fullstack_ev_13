@@ -35,7 +35,7 @@ const AuthContextProvider = ({ children }) => {
       navigate("/");
     } catch (e) {
       console.log(e);
-      setError(e);
+      setError([e.response.data.detail]);
     }
   };
 

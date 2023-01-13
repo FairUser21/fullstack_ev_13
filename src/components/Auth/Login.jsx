@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { Link as RouterLink } from "react-router-dom";
 import { authContext } from "../Contexts/AuthContext";
+import { Alert } from "@mui/material";
 
 function Copyright(props) {
   return (
@@ -37,7 +38,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
-  const { login } = React.useContext(authContext);
+  const { login, error } = React.useContext(authContext);
 
   const [email, setEmail] = React.useState("");
 
@@ -59,6 +60,9 @@ export default function Login() {
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
+        {error ? (
+          <Alert severity="error">{error.map((item) => item)}</Alert>
+        ) : null}
         <Box
           sx={{
             marginTop: 8,

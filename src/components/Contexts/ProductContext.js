@@ -116,6 +116,24 @@ const ProductContextProvider = ({ children }) => {
     }
   }
 
+  async function deleteProduct(id) {
+    try {
+      const token = JSON.parse(localStorage.getItem("token"));
+      const Authorization = `Bearer ${token.access}`;
+      const config = {
+        headers: {
+          Authorization,
+        },
+      };
+
+      const res = await axios.delete(`${API_PRODUCTS}/${id}/`, config);
+      getProducts();
+    } catch (e) {
+      console.log(e);
+      //~ setError(e.response.data);
+    }
+  }
+
   let values = {
     products: state.products,
     pages: state.pages,
@@ -126,6 +144,7 @@ const ProductContextProvider = ({ children }) => {
     addProducts,
     getProducts,
     toggleLike,
+    deleteProduct,
   };
   return (
     <productContext.Provider value={values}>{children}</productContext.Provider>
