@@ -43,7 +43,10 @@ const ProductContextProvider = ({ children }) => {
         },
       };
 
-      const res = await axios(`${API_PRODUCTS}/`, config);
+      const res = await axios(
+        `${API_PRODUCTS}/${window.location.search}`,
+        config
+      );
 
       dispatch({
         type: "GET_PRODUCTS",
@@ -97,6 +100,7 @@ const ProductContextProvider = ({ children }) => {
 
   let values = {
     products: state.products,
+    pages: state.pages,
     categories: state.categories,
     error,
 
